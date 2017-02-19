@@ -21,7 +21,7 @@ class Countdown {
         var tenthMod10 = tenth % 10;
         var sec = Math.floor(tenth / 10) % 60;
         var min = Math.floor(tenth / 600) % 60;
-        var hour = Math.floor(tenth / 36000) % 24;
+        var hour = Math.floor(tenth / 36000) % 99;
         return [("0" + hour).slice(-2), ("0" + min).slice(-2), ("0" + sec).slice(-2), tenthMod10];
     }
 }
