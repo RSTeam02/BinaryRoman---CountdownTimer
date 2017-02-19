@@ -5,10 +5,10 @@
 
 class Countdown {
 
-    setElapsed(el) {
-        this.elapsedLap = -el;
+    setDefault() {
+        this.elapsedLap = -50;
     }
-    
+
     startCountdown(start, paused, callback) {
         this.elapsedLap = new Date().getTime() - start - paused;
         callback(this.convertHms(-this.elapsedLap));

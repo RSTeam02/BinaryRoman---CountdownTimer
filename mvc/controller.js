@@ -7,13 +7,13 @@ class Controller {
     constructor(model) {
 
         this.model = model;
-        this.model.setElapsed(1);
         this.view = new View();
+        this.model.setDefault();
         this.classCb = document.getElementsByClassName("cb");
         this.classRbConv = document.getElementsByClassName("rbConv");
         this.classBtn = document.getElementsByClassName("btn");
         this.buttonListener();
-        this.setTimer(0)
+        this.setTimer(0);
         this.view.domLapView(this.getStrategy().start(this.model.convertHms(this.getTimer())));
         this.matrixListener();
 
@@ -46,6 +46,7 @@ class Controller {
 
     buttonListener() {
         var running = false;
+        var finished = false;
         var delayed = 1;
         var start = 0;
         var classBtn = document.getElementsByClassName("btn");
@@ -57,19 +58,25 @@ class Controller {
                 classBtn[0].value = "stop";
                 start = new Date().getTime();
                 running = true;
+                finished = false;
                 this.interval = setInterval(() => {
-                    if (-this.model.elapsedLap > 0) {
+                    if (-this.model.elapsedLap >= 50) {
                         this.updateView(start + this.getTimer(), delayed);
                     } else {
                         classBtn[0].value = "finished!";
+                        clearInterval(this.interval);
+                        alert("finished");
+                        finished = true;
                     }
-                }, 75);
+                }, 100);
             } else {
-                classBtn[0].value = "start";
-                delayed = -this.model.elapsedLap;
-                clearInterval(this.interval);
-                running = false;
-                this.setTimer(0);
+                if (!finished) {
+                    classBtn[0].value = "start";
+                    delayed = -this.model.elapsedLap;
+                    clearInterval(this.interval);
+                    running = false;
+                    this.setTimer(0);
+                }
             }
         }
 
@@ -77,10 +84,10 @@ class Controller {
         btn[1] = () => {
             running = false;
             delayed = 0;
+            this.model.setDefault();
             this.setTimer(0);
             clearInterval(this.interval);
             classBtn[0].value = "start";
-            this.model.setElapsed(1);
             this.view.domLapView(this.getStrategy().start(this.model.convertHms(this.getTimer())));
             this.matrixListener();
         }
