@@ -21,21 +21,33 @@ class Controller {
 
     matrixListener(msAdder = 0) {
         var classMat = document.getElementsByClassName("bin");
-
+        var res = 0;
         for (let i = 0; i < classMat.length; i++) {
             document.getElementById(classMat[i].id).addEventListener("click", () => {
                 if ([...classMat[i].id][0] === "0") {
-                    msAdder += Math.pow(2, 6 - [...classMat[i].id][1]) * 3600000;
+                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 3600000);
                 } else if ([...classMat[i].id][0] === "1") {
-                    msAdder += Math.pow(2, 6 - [...classMat[i].id][1]) * 60000;
+                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 60000);
                 } else if ([...classMat[i].id][0] === "2") {
-                    msAdder += Math.pow(2, 6 - [...classMat[i].id][1]) * 1000;
+                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 1000);
                 } else {
-                    msAdder += Math.pow(2, 6 - [...classMat[i].id][1]) * 100;
+                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 100);
                 }
-                this.updateTable(msAdder);
+                this.updateTable(res);
             });
         }
+    }
+
+    op(a, b) {
+        if (document.getElementById("plus").checked) {
+            a += b;
+        } else {
+            a -= b;
+            if (a <= 0) {
+                a = 0;
+            }
+        }
+        return a;
     }
 
     updateTable(msAdder) {
