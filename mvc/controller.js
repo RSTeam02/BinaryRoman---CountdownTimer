@@ -24,14 +24,14 @@ class Controller {
         var res = 0;
         for (let i = 0; i < classMat.length; i++) {
             document.getElementById(classMat[i].id).addEventListener("click", () => {
-                if ([...classMat[i].id][0] === "0") {
-                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 3600000);
-                } else if ([...classMat[i].id][0] === "1") {
-                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 60000);
-                } else if ([...classMat[i].id][0] === "2") {
-                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 1000);
+                if (Math.floor(classMat[i].id / 10) === 0) {
+                    res += this.op(msAdder, Math.pow(2, 6 - classMat[i].id % 10) * 3600000);
+                } else if (Math.floor(classMat[i].id / 10) === 1) {
+                    res += this.op(msAdder, Math.pow(2, 6 - classMat[i].id % 10) * 60000);
+                } else if (Math.floor(classMat[i].id / 10) === 2) {
+                    res += this.op(msAdder, Math.pow(2, 6 - classMat[i].id % 10) * 1000);
                 } else {
-                    res += this.op(msAdder, Math.pow(2, 6 - [...classMat[i].id][1]) * 100);
+                    res += this.op(msAdder, Math.pow(2, 6 - classMat[i].id % 10) * 100);
                 }
                 this.updateTable(res);
             });
@@ -59,47 +59,63 @@ class Controller {
     buttonListener() {
         var running = false;
         var finished = false;
+        var stopped = false;
         var delayed = 1;
+        var resetPush = 1;
         var start = 0;
         var classBtn = document.getElementsByClassName("btn");
         var btn = [];
 
         //start
         btn[0] = () => {
-            if (!running) {
-                classBtn[0].value = "stop";
-                start = new Date().getTime();
-                running = true;
-                finished = false;
-                this.interval = setInterval(() => {
-                    if (-this.model.elapsedLap >= 50) {
-                        this.updateView(start + this.getTimer(), delayed);
-                    } else {
-                        classBtn[0].value = "finished!";
+            resetPush = 1;
+            if (this.getTimer() > 0) {
+                if (!running) {
+                    classBtn[0].value = "stop";
+                    start = new Date().getTime();
+                    running = true;
+                    finished = false;
+
+                    this.interval = setInterval(() => {
+                        if (-this.model.elapsedLap >= 50) {
+                            (stopped)
+                                ? this.updateView(start, delayed)
+                                : this.updateView(start + this.getTimer(), delayed);
+                        } else {
+                            classBtn[0].value = "finished!";
+                            clearInterval(this.interval);
+                            alert("finished");
+                            finished = true;
+                        }
+                    }, 100);
+
+                } else {
+                    if (!finished) {
+                        classBtn[0].value = "start";
+                        delayed = -this.model.elapsedLap;
                         clearInterval(this.interval);
-                        alert("finished");
-                        finished = true;
+                        running = false;
+                        stopped = true;
                     }
-                }, 100);
-            } else {
-                if (!finished) {
-                    classBtn[0].value = "start";
-                    delayed = -this.model.elapsedLap;
-                    clearInterval(this.interval);
-                    running = false;
-                    this.setTimer(0);
                 }
             }
         }
 
         //reset
         btn[1] = () => {
-            running = false;
+            stopped = running = false;
             delayed = 0;
+
             this.model.setDefault();
-            this.setTimer(0);
+
+            if (resetPush === 2) {
+                this.setTimer(0);
+                resetPush = 1;
+            }
+
             clearInterval(this.interval);
             classBtn[0].value = "start";
+            resetPush++;
             this.view.domLapView(this.getStrategy().start(this.model.convertHms(this.getTimer())));
             this.matrixListener();
         }

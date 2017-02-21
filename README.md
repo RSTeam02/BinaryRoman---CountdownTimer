@@ -11,4 +11,12 @@ Each timeunit has a maximum sum of 63 (decimal). Every remainder will be convert
 into the next higher unit. For example 63 seconds are 1 minute and 3 seconds.
 
 20.02:
-Radio button for Increment/Decrement added. => subtraction is now supported 
+Radio button for Increment/Decrement added. => subtraction is now supported
+ 
+21.02:
+instead of splitting, use of %10 or /10 to set listeners for rows, columns
+
+Some UI - fixes:  
++ only start, if timer > 0 
++ push 1x reset: restore previous timer setting 
++ push 2x reset: set the whole table to zero 
