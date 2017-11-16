@@ -3,7 +3,7 @@
  * Countdown accuracy 1/10s
  */
 
-class Countdown {
+export class Countdown {
 
     setDefault() {
         this.elapsedLap = -50;

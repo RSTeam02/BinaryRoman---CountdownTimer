@@ -1,4 +1,6 @@
-class RomanConverter {
+import { HtmlTable } from "../table/htmlTable.js";
+
+export class RomanConverter {
 
     convert(dec) {
 

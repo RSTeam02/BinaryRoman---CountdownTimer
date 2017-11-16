@@ -1,4 +1,4 @@
-class HtmlTable {
+export class HtmlTable {
 
     create(numArr, dec, firstRow) {
         let str = "";

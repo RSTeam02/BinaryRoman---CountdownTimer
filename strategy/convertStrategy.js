@@ -1,4 +1,4 @@
-class ConvertStrategy {
+export class ConvertStrategy {
     //pass strategy arg
     constructor(strategy) {
         this.strategy = strategy;

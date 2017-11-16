@@ -1,5 +1,9 @@
 #JavaScript (ECMAScript6) MultiConversion Countdown Timer, experimental
 
+16.11:
+native module support of modern browsers, test app on github pages:
+https://rsteam02.github.io/BinaryRoman---CountdownTimer  
+
 18.02:
 The App converts the current countdown time into binary or roman numeral format.
 1 unit (hour, minute, second,...) represents one binary/roman number. 

@@ -1,4 +1,6 @@
-class BinaryConverter {
+import { HtmlTable } from "../table/htmlTable.js";
+
+export class BinaryConverter {
 
     convert(dec) {
         //powers of 2

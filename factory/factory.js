@@ -1,4 +1,8 @@
-class Factory {
+import { BinaryConverter } from "../converter/binaryConverter.js";
+import { RomanConverter } from "../converter/romanConverter.js";
+
+
+export class Factory {
     //dependent on selected conversion mode via radiobutton
     execConvert(mode) {
         switch (mode) {
